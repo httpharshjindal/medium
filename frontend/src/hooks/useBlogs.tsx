@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-interface POST {
-  'id':string,
-  "title":string,
-  "content":string
-}
+
 
 const useBlogs = () => {
   const backendUrl = import.meta.env.VITE_DATABASE_URL;
