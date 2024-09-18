@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import BlogArr from "../store/BlogArr";
-import { useRecoilState } from "recoil";
+
+interface POST {
+  'id':string,
+  "title":string,
+  "content":string
+}
 
 const useBlogs = () => {
   const backendUrl = import.meta.env.VITE_DATABASE_URL;
   const [loading, setLoading] = useState(true);
-  const [blogAtom, setBlogAtom] = useRecoilState(BlogArr);
-  const [error, setError] = useState("");
+  const [posts, setPosts] = useState([]);
   useEffect(() => {
     try {
       setLoading(false);
@@ -18,9 +21,8 @@ const useBlogs = () => {
           },
         })
         .then((res) => {
-          setError(res.data.msg);
           if (res.data.posts) {
-            setBlogAtom(res.data.posts);
+            setPosts(res.data.posts);
           }
         });
     } catch (e) {
@@ -30,8 +32,7 @@ const useBlogs = () => {
 
   return {
     loading,
-    blogAtom,
-    error,
+    posts,
   };
 };
 

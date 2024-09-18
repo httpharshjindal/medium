@@ -15,7 +15,7 @@ function BlogCard({blogId,author,title,content,thumbnail,date}:BlogCardType){
     const param = new URLSearchParams(queryString)
     const navigate = useNavigate()
     return(
-        <div className="w-2/3 h-full p-5 border-b-2" onClick={()=>{
+        <div className="w-full sm:w-4/6 h-full px-3 py-3 sm:px-2 border-b-2" onClick={()=>{
             param.set("id",blogId)
             navigate(`/blog/${blogId}`)
         }}>
@@ -24,11 +24,10 @@ function BlogCard({blogId,author,title,content,thumbnail,date}:BlogCardType){
                 <h1>{author}</h1>
             </div>
             <div className="flex ">
-                <div className="w-3/4 pt-2">
+                <div className="w-full pt-2">
                     <h1 className="text-2xl font-bold ">{title}</h1>
                     <p>{content.slice(0,100)}</p>
                 </div>
-                <div className="w-1/4 object-contain"><img src={thumbnail} alt="" /></div>
             </div>
             
             <div className="flex gap-2 items-center">

@@ -4,13 +4,17 @@ import Me from "../hooks/Me";
 import { useRecoilValue } from "recoil";
 import filterChar from "../store/filterChar";
 import { BlogCardSkeleton } from "../components/BlogCardSkeleton";
-
+import { Appbar } from "../components/Appbar";
+interface Post {
+  id: string;
+  title: string;
+  content: string;
+}
 function Blogs() {
   Me();
-  const { loading, blogAtom } = useBlogs();
+  const { loading, posts } = useBlogs();
   const filterCharAtom = useRecoilValue(filterChar);
-
-  const filteredPosts = blogAtom.filter((post: any) => {
+  const filteredPosts = posts?.filter((post: Post) => {
     const title = post.title ? post.title.toLowerCase() : "";
     const content = post.content
       ? post.content.slice(0, 180).toLowerCase()
@@ -23,19 +27,21 @@ function Blogs() {
     );
   });
 
-
-  if (loading) {
-    return <div className="flex w-full flex-col justify-center items-center pt-10" >
-      <BlogCardSkeleton/>
-      <BlogCardSkeleton/>
-      <BlogCardSkeleton/>
-      <BlogCardSkeleton/>
-    </div>
-  }
   return (
-    <div className="flex w-full h-screen flex-col justify-center items-center pt-20">
-      {filteredPosts.length > 0
-        ? filteredPosts.map((elem) => {
+    <div className="">
+      <Appbar />
+      <div className="flex flex-col w-full justify-center items-center">
+        {loading && (
+          <>
+            <BlogCardSkeleton/>
+            <BlogCardSkeleton/>
+            <BlogCardSkeleton/>
+            <BlogCardSkeleton/>
+            <BlogCardSkeleton/>
+          </>
+        )}
+        {filteredPosts.length > 0 ? (
+          filteredPosts.map((elem:any) => {
             return (
               <BlogCard
                 title={elem.title}
@@ -46,7 +52,10 @@ function Blogs() {
               />
             );
           })
-        : "No Post Found"}
+        ) : (
+          "No Posts Found"
+        )}
+      </div>
     </div>
   );
 }

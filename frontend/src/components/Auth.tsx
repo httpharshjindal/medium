@@ -8,7 +8,7 @@ import axios from "axios";
 
 function Auth({ type }: { type: "signup" | "signin" }) {
   return (
-    <div className="w-1/2 flex justify-center items-center">
+    <div className="w-full h-full flex justify-center items-center">
       {type == "signup" ? <SignupForm /> : <SigninForm />}
     </div>
   );
@@ -54,7 +54,7 @@ const SignupForm = () => {
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center gap-8">
-      <div className="flex flex-col justify-center items-center ">
+      <div className="flex h-full w-full flex-col justify-center items-center ">
         <h1 className=" font-bold text-3xl ">Create an Account</h1>
         <p className="text-md">
           Already have an account?

@@ -1,15 +1,29 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Avatar from "./Avatar";
-import GetStarted from "./GetStarted";
 import { decodeToken } from "react-jwt";
 import { useEffect, useState } from "react";
-import { useSetRecoilState } from "recoil";
-import filterChar from "../store/filterChar";
+import { SearchBar } from "./SearchBar";
+import PostAdd from "../assets/PostAdd.svg";
 
-function Appbar() {
+interface AppbarProps {
+  showSearchBar?: boolean;
+  showPublish?: boolean;
+  showAddPost?: boolean;
+  showAvatar?: boolean;
+  isPublishEnabled?: boolean; // New prop to control button state
+  onPublish?: () => void; // New prop for publish button action
+}
+
+export const Appbar: React.FC<AppbarProps> = ({
+  showSearchBar = true,
+  showPublish = false,
+  showAddPost = true,
+  showAvatar = true,
+  isPublishEnabled = false, // Add default value for isPublishEnabled
+  onPublish, // Add onPublish function prop
+}) => {
   const [username, setUsername] = useState("");
   const [showDropDown, setShowDropDown] = useState(false);
-  const setFilterChar = useSetRecoilState(filterChar);
   useEffect(() => {
     try {
       const token = localStorage.getItem("token");
@@ -20,76 +34,69 @@ function Appbar() {
       }
     } catch (e) {}
   }, []);
-
-  const navigate = useNavigate();
   return (
-    <div className="w-full h-12 border-b-2 flex justify-between items-center px-5 fixed bg-white">
-      <div className="flex w-1/2 gap-5 h-full justify-start items-center">
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Medium_logo_Wordmark_Black.svg/1280px-Medium_logo_Wordmark_Black.svg.png"
-          alt=""
-          className="h-6 w-28"
-          onClick={() => {
-            navigate("/");
-            window.location.reload()
-          }}
-        />
-        <div className=" bg-zinc-100 w-1/3 h-4/5 rounded-full flex justify-center items-center gap-3">
-          <i className="ri-search-line text-2xl text-zinc-600 font-thin"></i>
-          <input
-            type="text"
-            className="bg-transparent text-sm font-thin border-none focus-within:no-underline outline-none"
-            placeholder="Search"
-            onChange={(e) => {
-              setFilterChar(e.target.value);
-            }}
-          />
-        </div>
+    <nav className=" w-full border-black border-b-2 flex justify-between px-5 py-3 items-center">
+      <div className="flex items-center gap-5">
+        <span className="w-28">
+          <Link to={"/"}>
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Medium_logo_Wordmark_Black.svg/1280px-Medium_logo_Wordmark_Black.svg.png"
+              alt=""
+            />
+          </Link>
+        </span>
+        <div>{showSearchBar && <SearchBar />}</div>
       </div>
-
-      <div className="w-1/2 h-full gap-8 flex justify-end items-center">
-        <div
-          className="flex gap-1 justify-center items-center text-zinc-600 hover:text-zinc-900 cursor-pointer"
-          onClick={() => {
-            navigate("/create");
-          }}
-        >
-          <i className="ri-edit-line text-2xl"></i>
-          <h1>Create</h1>
-        </div>
-        <i className="ri-notification-3-fill text-3xl text-zinc-700 hover:text-zinc-900 select-none"></i>
-        {username ? (
-          <div
-            className="flex gap-1 relative cursor-pointer"
-            onClick={() => {
-              setShowDropDown(prev=>(!prev))
-              console.log(showDropDown);
-            }}
+      <div className="flex items-center gap-5 pl-5">
+        {showPublish && (
+          <button
+            onClick={isPublishEnabled ? onPublish : undefined}
+            type="button"
+            className={`flex justify-center text-white font-medium rounded-full text-sm px-5 py-2.5 text-center ${
+              isPublishEnabled
+                ? "bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300"
+                : "bg-gray-400 cursor-not-allowed"
+            }`}
           >
-            <Avatar username={username} />
+            Publish
+          </button>
+        )}
+        <div className="w-12 gap-3 flex justify-center items-center">
+          <div className="w-6">
+            {showAddPost && (
+              <Link to={"/create"}>
+                <img className="cursor-pointer" src={PostAdd} alt="" />
+              </Link>
+            )}
+          </div>
+          {showAvatar && (
             <div
-              className={` ${
-                showDropDown ? "visible" : "hidden"
-              } absolute top-12 right-1 w-32 bg-white border select-none`}
+              className="w-5"
+              onClick={() => {
+                setShowDropDown((prev) => !prev);
+              }}
             >
+              <Avatar username={username} />
               <div
-                className="flex p-2 hover:bg-zinc-300  "
-                onClick={() => {
-                  localStorage.removeItem("token");
-                  window.location.reload();
-                }}
+                className={` ${
+                  showDropDown ? "visible" : "hidden"
+                } absolute top-12 right-1 w-32 bg-white border select-none`}
               >
-                <i className="ri-logout-box-line"></i>
-                <p>Logout</p>
+                <div
+                  className="flex p-2 hover:bg-zinc-300  "
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    window.location.reload();
+                  }}
+                >
+                  <i className="ri-logout-box-line"></i>
+                  <p>Logout</p>
+                </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <GetStarted />
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </nav>
   );
-}
-
-export default Appbar;
+};
