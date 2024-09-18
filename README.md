@@ -1,5 +1,5 @@
-# [Medium Blog Clone](https://medium-git-main-mediums-projects.vercel.app/) 
-Live Link: https://medium-git-main-mediums-projects.vercel.app/
+# [Medium Blog Clone](https://medium-tyu9.onrender.com/)
+Live Link:https://medium-tyu9.onrender.com/
 
 **Medium Blog Clone** is a replica of the popular Medium Blog platform, allowing users to write and read blogs. This project is built with a **MERN** stack architecture and incorporates modern web technologies for optimal performance and security.
 
