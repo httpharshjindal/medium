@@ -6,11 +6,10 @@ type BlogCardType ={
     author:string,
     title:string,
     content:string,
-    thumbnail?:string,
     date:string
 }
 
-function BlogCard({blogId,author,title,content,thumbnail,date}:BlogCardType){
+function BlogCard({blogId,author,title,content,date}:BlogCardType){
     const queryString = window.location.search
     const param = new URLSearchParams(queryString)
     const navigate = useNavigate()
