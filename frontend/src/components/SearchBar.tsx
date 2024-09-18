@@ -17,7 +17,7 @@ export const SearchBar = () => {
                 type="text"
                 placeholder="Search posts..."
                 onChange={(e) => {
-                    setFilterChar(e.target.value);
+                    setFilterChar(e.target.value.toLowerCase());
                   }}
                 className="text-xs sm:text-lg pl-10 pr-4 py-1 sm:py-2 border rounded-full w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
