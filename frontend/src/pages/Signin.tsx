@@ -11,7 +11,7 @@ function Signin() {
         showPublish={false}
         showAvatar={false}
       />
-      <div className="sm:flex w-full h-full justify-center items-center py-5">
+      <div className="sm:flex w-full h-full justify-center items-center">
         <Auth type="signin" />
         <Quote />
       </div>
